@@ -1,0 +1,11 @@
+# This is a sample build file!;
+
+main (`example/src/main.cc`);
+main_out (`main`);
+bin (`.`);
+pkg_config(`--cflags --libs gtk+-3.0`);
+# clean_main();
+exec();
+
+clean_main();
+make();

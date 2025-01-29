@@ -1,0 +1,19 @@
+# Build Magma Build system with this file;
+# You Will need the official base magmic installation which you can find at example directory as `example/magma` launch that file for compiling this!;
+# Or Use Old magma installation for compiling this;
+
+main (`src/main.cc`);
+
+# Change the executable name by changing the following line;
+main_out (`magma`);
+
+# Change the binary directory by changing the name;
+bin (`bin`);
+
+# Change the compiler by changing the `g++` to the requiured compiler;
+compiler (`g++`);
+
+exec_args (`v`);
+exec ();
+
+make();

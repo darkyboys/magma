@@ -1,0 +1,440 @@
+entire code base:
+
+needed.hh
+/*
+ * Copyright (c) ghgltggamer 2025
+ * Written by ghgltggamer
+ * MAGMA - A Build System Which can simplyfy the Build process of a C++ project
+ * Licensed under the MIT License
+ * Checkout the README file for more information
+*/
+
+// This file includes all the requirnments of the project
+// Source
+
+// Std Cxx17 STL
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+
+#define UNIDEF "unidefx000001";
+#define MAGMA_VERSION 1;
+
+// typedefinations
+typedef std::string               func  ; // defination of the func keyword
+typedef int                       func_ ; // defination of the func_ keyword
+typedef unsigned long long        _func_; // defination of the _func_ keyword
+typedef std::vector <std::string>   darr; // defination of the darr keyword
+
+// Local Project Files
+#include "magma/magma_err.hh"
+#include "magma/magma_api.hh"
+#include "magma/magma_lexer.hh"
+#include "magma/magma_ir.hh"
+#include "magma/magma_function.hh"
+#include "magma/magma_parser.hh"
+#include "main.hh"
+
+
+main.hh
+/*
+ * Copyright (c) ghgltggamer 2025
+ * Written by ghgltggamer
+ * MAGMA - A Build System Which can simplyfy the Build process of a C++ project
+ * Licensed under the MIT License
+ * Checkout the README file for more information
+*/
+
+// This file is the main implementation of the MAGMA Project
+
+// Source code
+
+namespace magma {
+    class Main{
+
+    };
+}
+
+
+main.cc
+/*
+ * Copyright (c) ghgltggamer 2025
+ * Written by ghgltggamer
+ * MAGMA - A Build System Which can simplyfy the Build process of a C++ project
+ * Licensed under the MIT License
+ * Checkout the README file for more information
+*/
+
+// Source
+
+#ifndef MAGMA
+#define MAGMA 1
+
+// Including the depnedencies
+#include "nedded.hh"
+
+// Main program starts from here
+int main(int argc, char* argv[]){
+    if (argc == 1){
+        // std::string path = "./" + magma::project_file_name;
+        magma::parser(".");
+        // std::ifstream file(path);
+        // if (file.is_open()){
+        //     std::cout<<"File found!\n";
+        // }
+        // else std::cout<<"File not found!\n";
+    }
+    else {
+        std::string arg = argv[1];
+        if (arg == "version" or arg == "-v" or arg == "--version" or arg == "v"){
+            std::cout<<"MAGMA VERSION "<<MAGMA_VERSION;
+            std::cout<<"\n";
+        }
+    }
+}
+
+#endif
+
+
+magma/magma_api.hh
+/*
+ * Copyright (c) ghgltggamer 2025
+ * Written by ghgltggamer
+ * MAGMA - A Build System Which can simplyfy the Build process of a C++ project
+ * Licensed under the MIT License
+ * Checkout the README file for more information
+*/
+
+// Source
+
+namespace magma {
+    class string{
+    public:
+        func code_line; // this will store the code line
+        string (func line) : code_line(line){}; // this will assign the code line
+
+        func_ is_String(func_ index){ // this will check if the value is string or not
+            func_ rval = 0;
+            _func_ spos = 0;
+            _func_ epos = 0;
+            bool is_string_opened = false;
+            for (_func_ i = 0;i < code_line.length();i++){
+                // std::cout<<"token: "<<code_line[i]<<"\n"; // This line is for debugging
+                if (code_line[i] == '`' && is_string_opened) {
+                    is_string_opened = false;
+                    // std::cout<<"Collision detected: Ended String!"<<"\n"; // This line is for debugging
+                    epos = i;
+                    // std::cout<<"Collision detected: Epos: "<<epos<<"\n"; // This line is for debugging
+                }
+                else if (code_line[i] == '`' && is_string_opened == false) {
+                    is_string_opened = true;
+                    // std::cout<<"Collision detected: Started String!"<<"\n"; // This line is for debugging
+                    spos = i;
+                    // std::cout<<"Collision detected: Spos: "<<spos<<"\n"; // This line is for debugging
+                }
+                if (is_string_opened == false && (index > spos and index < epos)){
+                    rval = 1;
+                    // std::cout<<"yes it was in an string!\n"; // This line is for debugging
+                    break;
+                }
+            }
+            return rval;
+        }
+    };
+};
+
+
+magma/magma_err.hh
+/*
+ * Copyright (c) ghgltggamer 2025
+ * Written by ghgltggamer
+ * MAGMA - A Build System Which can simplyfy the Build process of a C++ project
+ * Licensed under the MIT License
+ * Checkout the README file for more information
+*/
+
+// This file contains the code for the errors
+
+// Source
+namespace magma {
+    void error(func message, func type = "s"){
+        if (type == "s"){
+            std::cout<<"Error detected -> Magma Syntax Error Detected ("<<message<<")\n";
+            std::exit ( 3 );
+        }
+        else {
+            std::cout<<"Error detected -> Magma IO Error ("<<message<<")\n";
+            std::exit ( 3 );
+        }
+    }
+}
+
+
+magma/magma_lexer.hh
+/*
+ * Copyright (c) ghgltggamer 2025
+ * Written by ghgltggamer
+ * MAGMA - A Build System Which can simplyfy the Build process of a C++ project
+ * Licensed under the MIT License
+ * Checkout the README file for more information
+*/
+
+// This part is where lexical annalysis is implemented
+
+// Source
+
+namespace magma {
+    darr lexer (func code_line){
+        magma::string lexer_mstring = code_line;
+        darr rval = {"unidefx000001", "unidefx000001"};
+        bool is_function_opened = false, is_function_already_loaded = false;
+        bool is_string_opened = false; // string flags
+        func fname;
+        bool is_comment = false;
+        func value;
+        for (_func_ i = 0;i < code_line.length();i++){
+            // std::cout<<code_line[i]<<"\n";
+            if (code_line[i] == '#' && lexer_mstring.is_String(i) == 0) is_comment = true;
+            if (is_comment) continue;
+            if (code_line[i] == '`' && is_string_opened && lexer_mstring.is_String(i) == 0) is_string_opened = false;
+            else if (code_line[i] == '`' && is_string_opened == false && lexer_mstring.is_String(i) == 0) is_string_opened = true;
+            else if (is_string_opened){
+                value += code_line[i];
+                // std::cout<<value<<"\n";
+            }
+            else if (code_line[i] == ')' && is_function_opened && lexer_mstring.is_String(i) == 0){
+                is_function_opened = false;
+                is_function_already_loaded = true;
+                // std::cout<<"Collision Detected : The Function is now closed\n";
+            }
+            else if (code_line[i] == '(' && is_function_opened == false && lexer_mstring.is_String(i) == 0){
+                is_function_opened = true;
+                func name;
+                // std::cout<<"Collision Detected : The Function is now opened\n";
+                for (_func_ x = i-1;true;x--){
+                    // std::cout<<code_line[x]<<"\n";
+                    if (x == 0){
+                        // std::cout<<"x is now 0\n";
+                        if (code_line[x] != ' ') {
+                            name += code_line[x];
+                            break;
+                        }
+                        else break;
+                    }
+                    else if (code_line[x] == ' ') continue;
+                    else {
+                        name += code_line[x];
+                    }
+                }
+
+                // std::cout<<"y-start\n";
+                for (_func_ y = name.length();true;y--){
+                    if (y == 0) {
+                        fname += name[0];
+                        break;
+                    }
+                    // std::cout<<name[y]<<"\n";
+                    fname += name[y];
+                }
+
+                // std::cout<<"The function name is : "<<rval[0]<<"\n";
+            }
+
+            // For The Syntax Errors!
+            else if (code_line[i] == ')' && is_function_opened == false && lexer_mstring.is_String(i) == 0) magma::error("The Function was already declared so why re-closing it ?");
+            else if (code_line[i] == '(' && is_function_opened && lexer_mstring.is_String(i) == 0) magma::error("The Function was already opened so why re-opening it ?");
+        }
+        rval[0] = fname;
+        rval[1] = value;
+        //         std::cout<<"The function name is : "<<rval[0]<<"\n";
+        // std::cout<<"The function data is : "<<rval[1]<<"\n";
+
+        return rval;
+    }
+}
+
+
+magma/magma_function.hh
+/*
+ * Copyright (c) ghgltggamer 2025
+ * Written by ghgltggamer
+ * MAGMA - A Build System Which can simplyfy the Build process of a C++ project
+ * Licensed under the MIT License
+ * Checkout the README file for more information
+*/
+
+// This is the implementation of the magma file functions
+
+// Source
+// #include <vector>
+
+namespace magma {
+    func compiler = "g++ ",
+         compiler_arguments = "",
+         pkg_config = "",
+         combine = "",
+         main = "main.cc ",
+         bin = "bin",
+         main_out = "main ",
+         main_bin_name = "main ";
+    func exec_args = "";
+    func temp;
+    darr include, include_output;
+    
+    void function (func name, func value){ // This will execute the functions
+        // system function declaration
+        
+        if (name.find("system") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            magma::IR += value + "\n";
+        }
+
+        else if (name.find("compiler_arguments") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            magma::compiler_arguments = value + " ";
+        }
+
+        else if (name.find("compiler") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            magma::compiler = value + " ";
+        }
+
+
+
+        else if (name.find("clean_main") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            // magma::include = value;
+            magma::temp += "rm -rf " + magma::main_out + "\n";
+        }
+
+        else if (name.find("exec_args") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            // magma::include = value;
+            exec_args = value;
+        }
+
+        else if (name.find("exec") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            // magma::include = value;
+            magma::temp += "./" + magma::bin + "/" + magma::main_out + exec_args + "\n";
+        }
+
+        else if (name.find("pkg_config") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            magma::pkg_config = "`pkg-config " + value + "` ";
+        }
+
+        else if (name.find("combine") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            magma::combine = "-c " + value + " ";
+        }
+
+
+        else if (name.find("main_out") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            magma::main_out = value + " ";
+        }
+
+        else if (name.find("main") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            magma::main = value + " ";
+        }
+
+        else if (name.find("bin") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            magma::bin = value;
+        }
+
+        else if (name.find("clean") != std::string::npos){
+            // std::cout<<"system function detected!\n";
+            // magma::include = value;
+            IR += "clear\ncls";
+        }
+
+        else if (name.find("make") != std::string::npos){
+            // Prepare the IR Finally!
+            IR += "mkdir " + magma::bin + "\n";
+            func main_file = magma::compiler + magma::combine + magma::main + "-o " + magma::bin + "/" + magma::main_out + magma::compiler_arguments + magma::pkg_config + "\n";
+            // std::cout<<"command for main:\n"
+            //          <<main_file<<temp
+            //          <<"\n";
+            IR += main_file + temp;
+        }
+    }
+};
+
+
+magma/magma_ir.hh
+/*
+ * Copyright (c) ghgltggamer 2025
+ * Written by ghgltggamer
+ * MAGMA - A Build System Which can simplyfy the Build process of a C++ project
+ * Licensed under the MIT License
+ * Checkout the README file for more information
+*/
+
+// This file contains the IR - Intermideate Representation
+
+// Source
+
+namespace magma {
+    func IR = ""; // the variable which stores the IR in it for the compilation
+}
+
+
+magma/magma_parser.hh
+/*
+ * Copyright (c) ghgltggamer 2025
+ * Written by ghgltggamer
+ * MAGMA - A Build System Which can simplyfy the Build process of a C++ project
+ * Licensed under the MIT License
+ * Checkout the README file for more information
+*/
+
+// This part is where the parsing logic is been implemented
+
+// Source
+
+#include <fstream>
+#include <string>
+#include <system_error>
+namespace magma {
+    func project_file_name = "build.magma";
+    void parser(func project_path){
+        func fpath = project_path + "/" + project_file_name;
+        // std::cout<<fpath<<"\n";
+        std::ifstream ifile(fpath);
+        if (!ifile.is_open()){
+            magma::error("No Build File Found!", "fs"); // file system error
+        }
+
+        func code_current_line = "", temp;
+        func_ spos, epos;
+        bool is_string_opened = false;
+        while (std::getline(ifile, temp)){
+            for (_func_ i = 0;i < temp.length();i++){
+                code_current_line += temp[i];
+                if (temp[i] == '`' and is_string_opened == false){
+                    spos = i;
+                    is_string_opened = true;
+                }
+                else if (temp[i] == '`' and is_string_opened){
+                    epos = i;
+                    is_string_opened = false;
+                }
+                if (temp[i] == ';' and is_string_opened) continue;
+                else if (temp[i] == ';' and is_string_opened == false){
+                    // std::cout<<"The first collision is here : "<<code_current_line<<"\n";
+                    darr tokens = magma::lexer(code_current_line);
+                    // std::cout<<"The function name is "<<tokens[0]<<"\n";
+                    // std::cout<<"The function value is "<<tokens[1]<<"\n";
+                    magma::function(tokens[0], tokens[1]);
+                    code_current_line.clear();
+                    break;
+                }
+            }
+        }
+        std::system(magma::IR.c_str());
+    }
+};

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAGMA Build System - Documentation</title>
+    <style>
+        /* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Cantarell', sans-serif; /* Default GNOME font */
+}
+
+/* Body background and general style for Dark Theme */
+body {
+  background-color: #1e1e1e; /* Dark background (GNOME Dark) */
+  color: #e1e1e1; /* Light gray text */
+  font-size: 16px;
+  line-height: 1.5;
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  min-height: 100vh;
+  padding: 20px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Container for content */
+.container {
+  width: 100%;
+  /* max-width: 1200px; */
+  padding: 20px;
+  background-color: #2c2c2c; /* Dark gray container */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Buttons */
+button {
+  background-color: #5c9bfa; /* GNOME blue */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+  background-color: #4486d7; /* Slightly darker blue */
+  transform: translateY(-2px);
+}
+
+button:active {
+  background-color: #2979c1; /* Even darker blue */
+  transform: translateY(2px);
+}
+
+/* Input fields */
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #444444; /* Dark border */
+  border-radius: 8px;
+  background-color: #333333; /* Dark input background */
+  color: #e1e1e1; /* Light text inside input */
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+  border-color: #5c9bfa; /* GNOME blue focus effect */
+  outline: none;
+  box-shadow: 0 0 5px rgba(92, 155, 250, 0.5); /* Blue focus glow */
+}
+
+/* Links */
+a {
+  color: #5c9bfa;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #4486d7; /* Slightly darker blue */
+}
+
+/* Lists */
+ul {
+  list-style-type: none;
+  margin: 20px 0;
+  padding-left: 20px;
+}
+
+ul li {
+  padding: 8px 0;
+  border-bottom: 1px solid #444444; /* Darker divider */
+}
+
+ul li:last-child {
+  border-bottom: none;
+}
+
+ul li:hover {
+  background-color: #3a3a3a; /* Darker highlight on hover */
+}
+
+/* Cards or Panels */
+.card {
+  background-color: #3c3c3c; /* Dark card background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  margin: 20px 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* Modal-like Dialog Box */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2c2c2c; /* Dark background for modal */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+.modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Transitions on hover for other elements */
+.container, button, input, textarea, .card {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+/* Dark Mode - Ensuring it mimics GNOME Dark (applies for users with dark mode preference) */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1e1e1e;
+    color: #e1e1e1;
+  }
+
+  .container {
+    background-color: #2c2c2c;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  button {
+    background-color: #5c9bfa;
+  }
+
+  button:hover {
+    background-color: #4486d7;
+  }
+
+  input, textarea {
+    background-color: #333333;
+    border-color: #444444;
+    color: white;
+  }
+
+  input:focus, textarea:focus {
+    border-color: #5c9bfa;
+    box-shadow: 0 0 5px rgba(92, 155, 250, 0.5);
+  }
+
+  a {
+    color: #5c9bfa;
+  }
+
+  .card {
+    background-color: #3c3c3c;
+  }
+}
+
+details summary
+{
+    list-style: none;
+    cursor: pointer;
+}
+
+code{
+    background-color: #444444;
+}
+
+strong{
+    color: orange;
+}
+span {
+    color: yellow;
+}
+.code{
+    background-color: #1e1e1e;
+    margin: 20px;
+    padding: 20px;
+}
+
+    </style>
+</head>
+<body>
+    <nav class="container" style="text-align: center;width: 100%;">
+       Documentation of Magma 
+    </nav>
+<br>
+<br>
+    <button>
+        You are using MAGMA 1
+    </button>
+
+    <br>
+    <br>
+
+    <center>
+        <h4>
+            This Documentation only supports the version of magma you are using.
+        </h4>
+    </center>
+
+    <br>
+    <br>
+
+    <center>
+        <details>
+            <summary class="card">
+                Introduction to Functions
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>Functions</b> are very important terms in the Magma's <code>build.magma</code> file as they are responsible for almost everything you will need.
+                <br>
+                <br>
+                <h2>
+                    Format for writting a function
+                </h2>
+                <p>
+                    You need to follow the following format to write a function: <br>
+
+                    <div class="code">
+                        function name (`value`);
+                    </div>
+
+                    <br>
+                    <h2>
+                        Example:-
+                    </h2>
+                    <div class="code">
+                        <strong>main </strong> ( <span>`src/main.cc`</span> );
+                    </div>
+                </p>
+
+                <br>
+                <br>
+                <h2>
+                    Comments
+                </h2>
+                <code>Comments</code> are ignored by the <code>MAGMA</code> build system but still then needed to be ended with a <code>;</code>
+                <br>
+                <div class="code">
+                    # This is a comment;
+                </div>
+
+                <br>
+                <br>
+
+                <h2>
+                    String concatenation
+                </h2>
+                <code>string concatenation</code> is supported which means combining 2 different strings in the function and you can do it like this.
+                <br>
+                <div class="code">
+                    <strong>main</strong> ( <span>`main`</span> <span>`.cc`</span> ); # this will become main.cc;
+                </div>
+            </div>
+        </details>
+        
+
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                main - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>main</b> is a very important function as it is used to define your <code>main.cc</code> or <code>main C++ Project file</code> that the magma will compile.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>main </strong> ( <span>`src/main.cc`</span> );
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                main_out - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>main_out</b> is another very important function as it is used to define your <code>main.cc</code> or <code>main C++ Project file</code>'s output binary file name that the magma will create.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>main_out </strong> ( <span>`main`</span> );
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                bin - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>bin</b> is another very important function as it is used to define your <code>binary</code> directory where all the compiled files are going to be stored after compilation. If the directory doesnot exists then it will create it.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>bin </strong> ( <span>`bin`</span> );
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                compiler - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>compiler</b> is another very important function as it is used to define your <code>compiler</code> which will be used for compiling your c++ program.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>compiler </strong> ( <span>`g++`</span> );
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                system - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>system</b> is a function which is used to define a <code>system call</code> which is nothing but a command which your Operating System will execute. Note that <code>system</code> is a sequencer function which are the functions who are directly compiled into <code>IR</code> by the <code>parser</code>. So use is carefully.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>system </strong> ( <span>`ls`</span> );
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                compiler_argument - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>compiler_argument</b> is another very important function as it is used to define your <code>arguments</code> which your compiler will use during the compilation process.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>compiler_argument </strong> ( <span>`-lcurl`</span> );
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                clean_main - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>clean_main</b> is a function which is used to delete your <code>main compiled binary</code> at any point, Also note that <code>clean_main</code> is a sequencer function which are the functions who are directly compiled into <code>IR</code> by the <code>parser</code>. So use is carefully.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>clean_main </strong> ();
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                clean - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>clean</b> is a function which is used to clear your <code>console</code> at any point, Also note that <code>clean</code> is a sequencer function which are the functions who are directly compiled into <code>IR</code> by the <code>parser</code>. So use is carefully.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>clean </strong> ();
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                exec - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>exec</b> is a function which is used to execute your <code>main Compiled Binary</code> at any point, Also note that <code>exec</code> is a sequencer function which are the functions who are directly compiled into <code>IR</code> by the <code>parser</code>. So use is carefully. Usually this is used after the main configuration. 
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>exec </strong> ();
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                exec_args - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>exec_args</b> is a function which is used to add the executable arguments to your <code>main Compiled Binary</code> which will be used with the <code>exec</code> function, And be sure to use this before the <code>exec</code> function. 
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>exec_args </strong> ( <span>`--version`</span> ); <br>
+                        <strong>exec </strong> ();
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                pkg_config - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>pkg_config</b> is a function which is used to add the dependency arguments to your <code>main C++ Code</code> which will be used during the compilation of your source code. Here you can define libraries who supports pkg-config.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>pkg_config </strong> ( <span>`--cflags --libs gtk+-3.0`</span> );
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                combine - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>combine</b> is a function which is used to combine multiple <code>C++ Source Files</code> with your <code>main C++ Source file</code> which will be done during the compilation of your source code.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>combine </strong> ( <span>`1.cc 2.cc 3.cc`</span> );
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
+
+
+
+
+
+        <details>
+            <summary class="card">
+                make - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>make</b> is a very very important function which is used to finally build the <code>C++ Binary</code> from the configuration<br>. Use this function at most last!
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>make </strong> ();
+                    </div>
+                </p>
+            </div>
+        </details>
+
+
+
+        <details>
+            <summary class="card">
+                Example build.magma file
+            </summary>
+            <div class="container" style="text-align: left;">
+                <div class="code">
+                    <strong>main </strong> ( <span>`main.cc`</span> ); <br>
+                    <strong>main_out </strong> ( <span>`main`</span> ); <br>
+                    <strong>bin </strong> ( <span>`build`</span> ); <br>
+                    <strong>compiler </strong> ( <span>`g++`</span> ); <br>
+                    <strong>clean </strong> (); <br>
+                    <strong>exec </strong> (); <br>
+                    <strong>make</strong> ();
+
+                </div>
+            </div>
+        </details>
+
+        <br>
+        <br>
+
+        Written by ghgltggamer 2025 12:00pm on 1/29/25 
+    </center>
+</body>
+</html>
