@@ -32,7 +32,7 @@ namespace magma {
             magma::IR += value + "\n";
         }
 
-        else if (name.find("compiler_arguments") != std::string::npos){
+        else if (name.find("compile_arguments") != std::string::npos){
             // std::cout<<"system function detected!\n";
             magma::compiler_arguments = value + " ";
         }
@@ -73,7 +73,7 @@ namespace magma {
         }
 
 
-        else if (name.find("main_out") != std::string::npos){
+        else if (name.find("out") != std::string::npos){
             // std::cout<<"system function detected!\n";
             magma::main_out = value + " ";
         }
