@@ -5,7 +5,7 @@
 main (`src/main.cc`);
 
 # Change the executable name by changing the following line;
-main_out (`magma`);
+out (`magma`);
 
 # Change the binary directory by changing the name;
 bin (`bin`);
