@@ -96,12 +96,18 @@ namespace magma {
 
         else if (name.find("make") != std::string::npos){
             // Prepare the IR Finally!
-            IR += "mkdir " + magma::bin + "\n";
+            std::ofstream tofile (magma::bin + "/magma.destination"); // test out file
+            std::ifstream tifile (magma::bin + "/magma.destination"); // test in file
+            if (tifile.is_open()) IR += "rm -rf " + (magma::bin + "/magma.destination") + "\n";
+            else IR += "mkdir " + magma::bin + "\n";
+            // std::cout << "rm -rf " + (magma::bin + "/magma.destination")<<"\n";
             func main_file = magma::compiler + magma::combine + magma::main + "-o " + magma::bin + "/" + magma::main_out + magma::compiler_arguments + magma::pkg_config + "\n";
             // std::cout<<"command for main:\n"
             //          <<main_file<<temp
             //          <<"\n";
             IR += main_file + temp;
         }
+
+        else if (name.find("run") != std::string::npos) std::system (value.c_str());
     }
 };

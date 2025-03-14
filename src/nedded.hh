@@ -16,7 +16,7 @@
 #include <vector>
 
 #define UNIDEF "unidefx000001";
-#define MAGMA_VERSION 2;
+#define MAGMA_VERSION 3;
 
 // typedefinations
 typedef std::string               func  ; // defination of the func keyword

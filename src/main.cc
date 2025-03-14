@@ -9,7 +9,7 @@
 // Source
 
 #ifndef MAGMA
-#define MAGMA 1
+#define MAGMA 3
 
 // Including the depnedencies
 #include "nedded.hh"

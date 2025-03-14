@@ -429,6 +429,38 @@ span {
 
 
 
+
+        <details>
+            <summary class="card">
+                run - Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>run</b> is a function which is used to define and run a <code>system call</code> live, which is nothing but a command which your Operating System will execute. Note that <code>run</code> is not a sequencer function ,Which are the functions who are directly compiled into <code>IR</code> by the <code>parser</code>. Instead <code>run</code> function runs live without relying on <code>make</code>.
+                <br>
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>run </strong> ( <span>`ls`</span> );
+                    </div>
+                </p>
+                <br>
+                <p>
+                    <i>
+                        Here the main difference between <code>system</code> and <code>run</code> is system runs within the IR, Means within the make and run , Executes without make and IR, Live.
+                    </i>
+                </p>
+            </div>
+        </details>
+
+
+
+
+
+
+
         <details>
             <summary class="card">
                 compile_argument - Function
