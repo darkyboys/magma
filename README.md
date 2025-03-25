@@ -79,6 +79,18 @@ And you will have the magma binary inside the bin directory, And you can now pla
 ## How To Use Magma?
 Using `Magma` is very very simple! Just create the `build.magma` file in your project and then you can use the `magma` command to compile your project from the `build.magma` file, Note that you will find the documentation of `build.magma` file inside the repository directory named as `docs.html` and you can launch it in any browser to see and documentation.
 
+### shell64.magma
+A `shell64.magma` is a file format introdued in `magma4` by ghgltggamer to allow magma to execute commands from a seperate file, This file contains commands in famr format as a `.sh` file would contain, And then `magma` runs all of these commands line by line.
+
+**For Example:**
+You want to build the project okay, But now also want to provide a shell script semlessly binds with magma to provide your app's install. Well you can make a install directory and add commands to the `install/shell64.magma` as per root directory and now you can say.
+```bash
+sudo magma install
+```
+And magma will read from `shell64.magma` or `build.magma` files.
+You can also use `build.magma` with `run` function but then `shell64.magma` will do it seamlessly.
+
+
 ## Contributing ?
 Please refer the <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> file for guidelines.
 

@@ -8,8 +8,10 @@
 
 // Source
 
+#include <cstdlib>
+#include <fstream>
 #ifndef MAGMA
-#define MAGMA 3
+#define MAGMA 4
 
 // Including the depnedencies
 #include "nedded.hh"
@@ -18,6 +20,12 @@
 int main(int argc, char* argv[]){
     if (argc == 1){
         // std::string path = "./" + magma::project_file_name;
+        std::ifstream ifile_shell64("shell64.magma");
+        if (ifile_shell64.is_open()){
+            std::string temp;
+            while (std::getline(ifile_shell64, temp)) std::system (temp.c_str());
+            std::exit ( 3 );
+        }
         magma::parser(".");
         // std::ifstream file(path);
         // if (file.is_open()){
@@ -30,6 +38,15 @@ int main(int argc, char* argv[]){
         if (arg == "version" or arg == "-v" or arg == "--version" or arg == "v"){
             std::cout<<"MAGMA VERSION "<<MAGMA_VERSION;
             std::cout<<"\n";
+        }
+        else {
+            std::ifstream ifile_shell64(arg + "/shell64.magma");
+            if (ifile_shell64.is_open()){
+                std::string temp;
+                while (std::getline(ifile_shell64, temp)) std::system (temp.c_str());
+                std::exit ( 3 );
+            }
+            magma::parser(arg);
         }
     }
 }
