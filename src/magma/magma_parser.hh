@@ -12,7 +12,7 @@
 
 #include <fstream>
 #include <string>
-#include <system_error>
+
 namespace magma {
     func project_file_name = "build.magma";
     void parser(func project_path){
@@ -40,15 +40,21 @@ namespace magma {
                 if (temp[i] == ';' and is_string_opened) continue;
                 else if (temp[i] == ';' and is_string_opened == false){
                     // std::cout<<"The first collision is here : "<<code_current_line<<"\n";
+                    magma::log ("parser", "Sending the line `" + code_current_line + "` to the lexer for lexcial Annalysis.");
                     darr tokens = magma::lexer(code_current_line);
                     // std::cout<<"The function name is "<<tokens[0]<<"\n";
                     // std::cout<<"The function value is "<<tokens[1]<<"\n";
+                    magma::log ("parser", "Lexer returned the processed tokens!");
+                    magma::log ("parser", "The function detected in the lexer tokens with name " + tokens[0] + " with value token to be " + tokens[1]);
+                    magma::log ("parser", "Sending the tokens to the function unit");
                     magma::function(tokens[0], tokens[1]);
                     code_current_line.clear();
                     break;
                 }
             }
         }
+        magma::log ("parser", "Finally executing the final generated IR! Which is ```IR-of-magma\n" + IR + "\n```");
+        magma::log ("parser", "Executing...");
         std::system(magma::IR.c_str());
     }
 };

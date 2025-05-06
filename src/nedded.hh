@@ -24,6 +24,10 @@ typedef int                       func_ ; // defination of the func_ keyword
 typedef unsigned long long        _func_; // defination of the _func_ keyword
 typedef std::vector <std::string>   darr; // defination of the darr keyword
 
+// keys
+const char SEPERATOR = char(int(245));
+bool show_logs = false;
+
 // Local Project Files
 #include "magma/magma_err.hh"
 #include "magma/magma_api.hh"

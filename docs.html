@@ -225,7 +225,7 @@ span {
 <br>
 <br>
     <button>
-        You are using MAGMA 4
+        You are using MAGMA 5
     </button>
 
     <br>
@@ -289,6 +289,18 @@ span {
                 <br>
                 <div class="code">
                     <strong>main</strong> ( <span>`main`</span> <span>`.cc`</span> ); # this will become main.cc;
+                </div>
+
+                <br>
+                <br>
+
+                <h2>
+                    Arrays
+                </h2>
+                <code>Arrays</code> are used to give multiple inputs to an <code>Array Function</code> but remember the function must be an <code>Array Function</code> in order to accept arrays. An Array starts with <code>[</code> and ends with <code>]</code> brackets.
+                <br>
+                <div class="code">
+                    <strong>ArraySyntax</strong> [ <span>`Element1`</span> , <span>`Element2`</span> ]; # this is an array
                 </div>
             </div>
         </details>
@@ -661,6 +673,74 @@ span {
                         <strong>make </strong> ();
                     </div>
                 </p>
+            </div>
+        </details>
+
+
+
+
+        <details>
+            <summary class="card">
+                include - Array Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>include</b> is a very very important function which is used to set the include path for your compiler which will be the location from where your compiler will look for the headerfiles. This will use the <code>-Ipath</code> to run.
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>include </strong> [`path/to/header`]; <br>
+                        <strong>include </strong> [`path/to/header1`, `path/to/header2`];
+                    </div>
+                </p>
+                You can give as many include path as you wish
+            </div>
+        </details>
+
+
+
+
+        <details>
+            <summary class="card">
+                show_logs - Boolean Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>show_logs</b> is a very usefull function because it takes either <code>`true`</code> or <code>`false`</code> as argument and then either shows or don't shows the build logs , default and undefined value is false. Also remember that true/false must be passed as string.
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>show_logs </strong> (`true`);
+                    </div>
+                </p>
+                You can also hide logs anytime for any part you don't need just call the function back with value false.
+            </div>
+        </details>
+        
+
+
+
+        <details>
+            <summary class="card">
+                pkg_in - Array Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>pkg_in</b> is a very very important & advanced function which is used to safely include the dependencies to the program and will only proceed if dependencies are found othervise throw an error (preventing unintended outputs), It uses pkg-config tool but is completely different from pkg_config() function because in pkg_in[], You defines an array of only the names of libraries not flags like --cflags --libs which you would do in pkg_config, here you just defines the name of the libraries directly and it will process all them easily.
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>pkg_in </strong> [`gtk+-3.0`, `webkit2gtk-4.0`]; <br>
+                        <strong>pkg_in </strong> [`gstreamer`];
+                    </div>
+                </p>
+                You can give as many libraries as you wish.
             </div>
         </details>
 

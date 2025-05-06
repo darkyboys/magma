@@ -11,7 +11,7 @@
 #include <cstdlib>
 #include <fstream>
 #ifndef MAGMA
-#define MAGMA 4
+#define MAGMA 5
 
 // Including the depnedencies
 #include "nedded.hh"
@@ -26,6 +26,12 @@ int main(int argc, char* argv[]){
             while (std::getline(ifile_shell64, temp)) std::system (temp.c_str());
             std::exit ( 3 );
         }
+        std::ofstream magma_config_dir_check_ofile("MagmaConfig/exists");
+        std::ifstream magma_config_dir_check_ifile("MagmaConfig/exists");
+        if (not magma_config_dir_check_ifile.is_open()){
+            std::system ("mkdir MagmaConfig");
+        }
+
         magma::parser(".");
         // std::ifstream file(path);
         // if (file.is_open()){
