@@ -151,7 +151,7 @@ namespace magma {
 
         else if (name.find("combine") != std::string::npos){
             // std::cout<<"system function detected!\n";
-            magma::combine = "-c " + value + " ";
+            magma::combine += value + " ";
             magma::log ("function", "Adding combine source files rule to the IR for combining `" + value + "` with other files.");
         }
 
