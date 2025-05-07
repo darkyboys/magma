@@ -189,7 +189,7 @@ namespace magma {
             if (tifile.is_open()) IR += "rm -rf " + (magma::bin + "/magma.destination") + "\n";
             else IR += "mkdir " + magma::bin + "\n";
             // std::cout << "rm -rf " + (magma::bin + "/magma.destination")<<"\n";
-            func main_file = magma::compiler + magma::main + "-o " + magma::combine + magma::bin + "/" + magma::main_out + magma::compiler_arguments + magma::pkg_config + "\n";
+            func main_file = magma::compiler + magma::main + "-o " + magma::bin + "/" + magma::main_out + magma::combine + magma::compiler_arguments + magma::pkg_config + "\n";
             // std::cout<<"command for main:\n"
             //          <<main_file<<temp
             //          <<"\n";
