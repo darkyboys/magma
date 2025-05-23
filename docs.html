@@ -748,6 +748,72 @@ span {
 
         <details>
             <summary class="card">
+                increment - Boolean Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>increment</b> is a very very important & advanced function which is used to decrease the build time of your program drastically by allowing you to perform incremental builds , Means magma will only compile your source files if there is any changes in the codebase, Othervise it won't compile your program, This is usefull for time savings but magma always provides option to both opt in and out based on prefrences and it's recommended to use this function for larger projects (Remember larger doesn't means complex, For complex projects plain builds are more recommended rather than incremental for precision).
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>increment </strong> (`true`); <br>
+                        <strong>increment </strong> (`false`); # true by default <br>
+                    </div>
+                </p>
+                If the value is <code>true</code> then it will tell magma to perform incremental builds and note that this checks byte by byte so there is no chance of mistakes in changes detection, Similarly <code>false</code> means you want to tell magma to perform plain and usual builds real time. Remember that this function just opt-in incremental builds, You still have to manually assign the source files manually to compare with snapshots via <code>compare[]</code> array function.
+            </div>
+        </details>
+
+
+
+        <details>
+            <summary class="card">
+                compare - Array Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>compare</b> is a very very important & advanced function which is used to decrease the build time of your program drastically by allowing you to perform incremental builds via <code>increment(`true`);</code>, THis function is used to describe which files to detect or which files you always want to check for building your program. For example you assigned main.cc file to <code>main()</code> function and now you also enables incremental builds with <code>increment()</code> function and you want to only compile <code>main.cc</code> when it has any changes in code then you need to tell magma that hey i want to listen this file changes , And Magma provides you this function to tell itself what to check and what not, Since anything outside of this function won't be checked by the magma. 
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>compare </strong> [`main.cc`]; # Let's listen to main.cc! <br>
+                        <strong>compare </strong> [`main.cc`, `Window.cc`, `loading.cc`]; # Thanks to the array function property that we can assign multiple C++ source files directly<br>
+                    </div>
+                </p>
+                You can assign as much files as you wish , Just remember that incremental builds will cancel your entire <code>make();</code> block if no changes detected for that particular target.
+            </div>
+        </details>
+
+
+
+        <details>
+            <summary class="card">
+                lib - Array Function
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>lib</b> is a very handy function if you want to include additional libraries which are outside of <code>pkg_in</code>, <code>pkg_config</code> functions, Because this is similar to <code>include</code> but this instead assigns a library flag to your compiler for example i want to make an SDL Application then in that case i have soo many options in magma and one most common option till magma5 was <code>compile_arguments</code>, With that function we could directly add <code>-lSDL</code> for our compiler but now in magma6 we have a dedicated <code>lib</code> array function which can take as many libraries as you wish and will generate flags for them means no more repetative `-lmylibrary1 -lmylibrary2` you can now use magma6 hyper fast speed to automate this for you as now you just say <code>lib [`mylibrary1`, `mylibrary2`];</code> and you are all set.
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>lib </strong> [`SDL2`]; <br>
+                        <strong>lib </strong> [`SDL3`, `gtk3`]; <br>
+                    </div>
+                </p>
+                You can give as many libraries as you wish due to properties of magma arrays.
+            </div>
+        </details>
+
+
+
+        <details>
+            <summary class="card">
                 Example build.magma file
             </summary>
             <div class="container" style="text-align: left;">
