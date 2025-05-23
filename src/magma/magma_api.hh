@@ -42,25 +42,4 @@ namespace magma {
             return rval;
         }
     };
-
-
-
-    int is_dir(const std::string& dir_name) {
-        return std::filesystem::is_directory(dir_name) ? 1 : 0;
-    }
-
-
-
-
-    std::string get_file (std::string file){
-        std::ifstream ifile (file);
-        std::string temp, content;
-        if (ifile.is_open()){
-            while (std::getline (ifile, temp)) content += temp + '\n';
-        }
-        else {
-            magma::error ("Magma Api can't find the file `" + file + "` to read, Please make sure that the file is accessible for the Magma API.");
-        }
-        return content;
-    }
 };

@@ -14,11 +14,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <random>
-#include <filesystem>
 
 #define UNIDEF "unidefx000001";
-#define MAGMA_VERSION 6;
+#define MAGMA_VERSION 5;
 
 // typedefinations
 typedef std::string               func  ; // defination of the func keyword
@@ -29,16 +27,9 @@ typedef std::vector <std::string>   darr; // defination of the darr keyword
 // keys
 const char SEPERATOR = char(int(245));
 bool show_logs = false;
-bool increment = false,
-     increment_possible = false,
-     increment_checked = false;
-const std::string magma_incremental_directory = "MagmaConfig/increment/";
-const std::string UNIDEF_STR = "unidefx000001";
 
 // Local Project Files
 #include "magma/magma_err.hh"
-#include "magma/magma_random.hh"
-#include "magma/magma_mcfgpl.hh"
 #include "magma/magma_api.hh"
 #include "magma/magma_lexer.hh"
 #include "magma/magma_ir.hh"
