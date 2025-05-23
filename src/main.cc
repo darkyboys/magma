@@ -8,29 +8,35 @@
 
 // Source
 
-#include <cstdlib>
-#include <fstream>
+
 #ifndef MAGMA
-#define MAGMA 5
+#define MAGMA 6
 
 // Including the depnedencies
 #include "nedded.hh"
 
 // Main program starts from here
 int main(int argc, char* argv[]){
+    if (!magma::is_dir("MagmaConfig")){
+        std::system ("mkdir MagmaConfig");
+    }
     if (argc == 1){
         // std::string path = "./" + magma::project_file_name;
         std::ifstream ifile_shell64("shell64.magma");
         if (ifile_shell64.is_open()){
             std::string temp;
-            while (std::getline(ifile_shell64, temp)) std::system (temp.c_str());
+            while (std::getline(ifile_shell64, temp)) {
+                magma::log ("cli", "Executing `" + temp + "` command for the system shell.");
+                std::system (temp.c_str());
+            }
             std::exit ( 3 );
         }
-        std::ofstream magma_config_dir_check_ofile("MagmaConfig/exists");
-        std::ifstream magma_config_dir_check_ifile("MagmaConfig/exists");
-        if (not magma_config_dir_check_ifile.is_open()){
-            std::system ("mkdir MagmaConfig");
-        }
+        // std::ofstream magma_config_dir_check_ofile("MagmaConfig/exists");
+        // std::ifstream magma_config_dir_check_ifile("MagmaConfig/exists");
+        // if (not magma_config_dir_check_ifile.is_open()){
+        //     std::system ("mkdir MagmaConfig");
+        // }
+        
 
         magma::parser(".");
         // std::ifstream file(path);

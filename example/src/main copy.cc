@@ -1,11 +1,11 @@
-// Building the GUI with Gtk
-// This should be updated
+// Building the GUI with Gtk mai-copysa
+// This should be updated as well
 #include <gtk/gtk.h>
- // std ccss
+
 int main(int argc, char * argv[]) {
-    gtk_init(&argc, &argv);
+    gtk_init(&argc, &argv); 
         GtkWidget* window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
         gtk_widget_show(window);
     gtk_main();
     return 0;
-}  
+} 

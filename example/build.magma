@@ -1,11 +1,13 @@
 # This is a sample build file!;
-
+increment (`true`);
+compare [`example/src/main.cc`, `example/src/main copy.cc`];
 main (`example/src/main.cc`);
 main_out (`main`);
 bin (`.`);
-pkg_config(`--cflags --libs gtk+-3.0`);
+# pkg_config(`--cflags --libs gtk+-3.0`);
+pkg_in [`gtk+-3.0`];
 # clean_main();
-exec();
+# exec();
 
-clean_main();
+# clean_main();
 make();
