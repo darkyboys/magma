@@ -11,7 +11,6 @@
 // Source
 // #include <vector>
 
-#include <fstream>
 namespace magma {
     func compiler = "g++ ",
          compiler_arguments = "",
@@ -24,7 +23,6 @@ namespace magma {
     func exec_args = "";
     func temp;
     darr include, include_output;
-    darr compairing_list = {};
     
     void function (func name, func value){ // This will execute the functions
         // system function declaration
@@ -57,17 +55,6 @@ namespace magma {
                 show_logs = false;
             else 
                 std::cout << "Magma Function Error _> (show_logs only expects `true` or `false` values, You wrote: " + value + " which was unexpected so the process can't be continued!)\n",
-                std::exit ( 3 );
-        }
-
-        else if (name.find("increment") != std::string::npos){
-            // std::cout<<"system function detected!\n";
-            if (value == "true")
-                increment = true;
-            else if (value == "false")
-                increment = false;
-            else 
-                std::cout << "Magma Function Error _> (increment only expects `true` or `false` values, You wrote: " + value + " which was unexpected so the process can't be continued!)\n",
                 std::exit ( 3 );
         }
 
@@ -134,113 +121,6 @@ namespace magma {
         }
 
 
-        else if (name.find("compare") != std::string::npos){
-            // std::cout<<"system function detected!\n";
-            if (increment){
-                magma::log ("function", "compairing files...");
-                if (array_value_tokens.size() == 0){
-                    magma::error ("compare needs an array but you passed a function to it! use '[', ']' instead of '(' ')' to avoid any unintended errors!");
-                }
-                bool is_cfg_just_created = false;
-                std::ifstream ifile_increment("MagmaConfig/increment.mcfgpl");
-                if (ifile_increment.is_open()){}
-                else {
-                    std::ofstream ofile_increment ("MagmaConfig/increment.mcfgpl");
-                    is_cfg_just_created = true;
-                }
-                // std::cout << is_cfg_just_created << '\n';
-                
-                for (unsigned long long i = 0;i < array_value_tokens.size();i++){
-                    if (is_cfg_just_created){
-                        std::string file_code = magma::generate_random_string(64);
-                        std::string prev_content = magma::get_file("MagmaConfig/increment.mcfgpl");
-                        std::ofstream ofile_increment ("MagmaConfig/increment.mcfgpl");
-                        ofile_increment << prev_content << array_value_tokens[i] << "*" << file_code;
-                            if (is_dir(magma_incremental_directory)){
-                                std::ofstream ofile_1 (magma_incremental_directory + "/" + file_code);
-                                ofile_1 << magma::get_file(array_value_tokens[i]);
-                            }
-                            else {
-                                std::system(std::string("mkdir -p " + magma_incremental_directory).c_str());
-                                std::ofstream ofile_1 (magma_incremental_directory + "/" + file_code);
-                                ofile_1 << magma::get_file(array_value_tokens[i]);
-                            }
-                        increment_possible = false;
-                    }
-                    else {
-                        std::string value_fetched = magma::get_value("MagmaConfig/increment.mcfgpl", array_value_tokens[i]);
-                        // std::cout << "Value Fetched : " << value_fetched << " for " << array_value_tokens[i] << "\n";
-                        if (value_fetched != UNIDEF_STR){
-                            if (is_dir(magma_incremental_directory)){
-                                std::ifstream ifile (magma_incremental_directory + "/" + value_fetched);
-                                if (!ifile.is_open()){
-                                    std::ofstream ofile_1 (magma_incremental_directory + "/" + value_fetched);
-                                    ofile_1 << magma::get_file(array_value_tokens[i]);
-                                }
-                                else {
-                                    if (not increment_possible and increment_checked) {
-                                        if (magma::get_file(magma_incremental_directory + "/" + value_fetched) != magma::get_file(array_value_tokens[i])){
-                                            std::ofstream ofile_2(magma_incremental_directory + "/" + value_fetched);
-                                            ofile_2 << magma::get_file(array_value_tokens[i]);
-                                        }
-                                        increment_possible = false;
-                                    }
-                                    else if (magma::get_file(magma_incremental_directory + "/" + value_fetched) == magma::get_file(array_value_tokens[i]))
-                                        increment_possible = true;
-                                    else {
-                                        std::ofstream ofile_2(magma_incremental_directory + "/" + value_fetched);
-                                        ofile_2 << magma::get_file(array_value_tokens[i]);
-                                        increment_possible = false;
-                                    }
-                                    if (not increment_checked) increment_checked = true;
-                                }
-                                // std::cout <<"Increment: " << increment_possible <<'\n';
-                            }
-                            else {
-                                std::system(std::string("mkdir -p " + magma_incremental_directory).c_str());
-                                std::ofstream ofile_1 (magma_incremental_directory + "/" + value_fetched);
-                                ofile_1 << magma::get_file(array_value_tokens[i]);
-                            }
-                        }
-                        else {
-                            std::string old_cfg = get_file ("MagmaConfig/increment.mcfgpl");
-                            std::ofstream new_cfg ("MagmaConfig/increment.mcfgpl");
-                            new_cfg << old_cfg << array_value_tokens[i] << "*" << magma::generate_random_string(64) << "\n" ;
-                            if (is_dir(magma_incremental_directory)){
-                                std::ofstream ofile_1 (magma_incremental_directory + "/" + value_fetched);
-                                ofile_1 << magma::get_file(array_value_tokens[i]);
-                            }
-                            else {
-                                std::system(std::string("mkdir -p " + magma_incremental_directory).c_str());
-                                std::ofstream ofile_1 (magma_incremental_directory + "/" + value_fetched);
-                                ofile_1 << magma::get_file(array_value_tokens[i]);
-                            }
-                        }
-                    }
-                    compairing_list.push_back (array_value_tokens[i]);
-                    magma::log ("function", "Adding `" + array_value_tokens[i] + "` to the Compairing list");
-                }
-                magma::log ("function", "compairing finished!");
-            }
-        }
-
-
-        else if (name.find("lib") != std::string::npos){
-            // std::cout<<"system function detected!\n";
-            magma::log ("function", "adding library flags...");
-            if (array_value_tokens.size() == 0){
-                magma::error ("lib needs an array but you passed a function to it! use '[', ']' instead of '(' ')' to avoid any unintended errors!");
-            }
-            std::string compile_value = "";
-            for (unsigned long long i = 0;i < array_value_tokens.size();i++){
-                compile_value += "-l" + array_value_tokens[i] + " ";
-                magma::log ("function", "Including Library Flag `" + array_value_tokens[i] + "`");
-            }
-            magma::compiler_arguments += compile_value;
-            magma::log ("function", "Library Flag Added!");
-        }
-
-
 
         else if (name.find("clean_main") != std::string::npos){
             // std::cout<<"system function detected!\n";
@@ -302,27 +182,20 @@ namespace magma {
         }
 
         else if (name.find("make") != std::string::npos){
-            if (increment_possible){
-                // do nothing for incremental builds
-                magma::log ("function", "Incremental Build Detected, No Changes were found in codebase during comparision so not building any IR.");
-                magma::log ("function", "Finished the IR for the current target " + main);
-            }
-            else {
-                // Prepare the IR Finally!
-                magma::log ("function", "Adding the make rules in the IR (Not related to make build system)");
-                std::ofstream tofile (magma::bin + "/magma.destination"); // test out file
-                std::ifstream tifile (magma::bin + "/magma.destination"); // test in file
-                if (tifile.is_open()) IR += "rm -rf " + (magma::bin + "/magma.destination") + "\n";
-                else IR += "mkdir " + magma::bin + "\n";
-                // std::cout << "rm -rf " + (magma::bin + "/magma.destination")<<"\n";
-                func main_file = magma::compiler + magma::main + magma::combine + "-o " + magma::bin + "/" + magma::main_out + magma::compiler_arguments + magma::pkg_config + "\n";
-                // std::cout<<"command for main:\n"
-                //          <<main_file<<temp
-                //          <<"\n";
-                magma::log ("function", "Generated commands : " + main_file + ", Converting to the IR!");
-                IR += main_file + temp;
-                magma::log ("function", "Finished the IR for the current target " + main);
-            }
+            // Prepare the IR Finally!
+            magma::log ("function", "Adding the make rules in the IR (Not related to make build system)");
+            std::ofstream tofile (magma::bin + "/magma.destination"); // test out file
+            std::ifstream tifile (magma::bin + "/magma.destination"); // test in file
+            if (tifile.is_open()) IR += "rm -rf " + (magma::bin + "/magma.destination") + "\n";
+            else IR += "mkdir " + magma::bin + "\n";
+            // std::cout << "rm -rf " + (magma::bin + "/magma.destination")<<"\n";
+            func main_file = magma::compiler + magma::main + magma::combine + "-o " + magma::bin + "/" + magma::main_out + magma::compiler_arguments + magma::pkg_config + "\n";
+            // std::cout<<"command for main:\n"
+            //          <<main_file<<temp
+            //          <<"\n";
+            magma::log ("function", "Generated commands : " + main_file + ", Converting to the IR!");
+            IR += main_file + temp;
+            magma::log ("function", "Finished the IR for the current target " + main);
         }
 
         else if (name.find("run") != std::string::npos) std::system (value.c_str());
