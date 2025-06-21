@@ -55,6 +55,7 @@ namespace magma {
         }
         magma::log ("parser", "Finally executing the final generated IR! Which is ```IR-of-magma\n" + IR + "\n```");
         magma::log ("parser", "Executing...");
-        std::system(magma::IR.c_str());
+        // std::system(magma::IR.c_str());
+        magma::executer(IR_Files);
     }
 };

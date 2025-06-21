@@ -12,6 +12,7 @@
 // #include <vector>
 
 #include <fstream>
+#include <string>
 namespace magma {
     func compiler = "g++ ",
          compiler_arguments = "",
@@ -48,6 +49,28 @@ namespace magma {
             magma::IR += value + "\n";
             magma::log ("function", "Converting the system command `" + value + "` into IR");
         }
+
+        // else if (name.find("parallel_size") != std::string::npos){
+        //     // std::cout<<"system function detected!\n";
+        //     magma::log ("function", "Setting Parallel Size To `" + value + "`");
+        //     if (!is_num(value)){
+        //         magma::error("parallel_size function only expects integer datatypes please write all your string as integer like `0` `1` ...");
+        //     }
+        //     else {
+        //         parallel_size = std::stoi(value);
+        //     }
+        // }
+
+        // else if (name.find("parallel") != std::string::npos){
+        //     // std::cout<<"system function detected!\n";
+        //     if (value == "true")
+        //         parallel = true;
+        //     else if (value == "false")
+        //         parallel = false;
+        //     else 
+        //         std::cout << "Magma Function Error _> (parallel only expects `true` or `false` values, You wrote: " + value + " which was unexpected so the process can't be continued!)\n",
+        //         std::exit ( 3 );
+        // }
 
         else if (name.find("show_logs") != std::string::npos){
             // std::cout<<"system function detected!\n";
@@ -322,6 +345,13 @@ namespace magma {
                 magma::log ("function", "Generated commands : " + main_file + ", Converting to the IR!");
                 IR += main_file + temp;
                 magma::log ("function", "Finished the IR for the current target " + main);
+                magma::log ("function", "Generating the IR Files for the current target " + main);
+                IR_Files.push_back ({main, IR});
+                std::cout << IR_Files[IR_Files.size()-1][0] <<"\n";
+                magma::log ("function", "Finished the IR Files for the current target " + main);
+                magma::log ("function", "Clearing the IR for the current target " + main);
+                IR.clear();
+                magma::log ("function", "Finished the IR Cleaning for the current target " + main);
             }
         }
 

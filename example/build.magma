@@ -1,9 +1,12 @@
 # This is a sample build file!;
 increment (`true`);
-compare [`example/src/main.cc`, `example/src/main copy.cc`];
+compare [`example/src/main.cc`];
+parallel (`true`);
+show_logs (`true`);
 main (`example/src/main.cc`);
 main_out (`main`);
 bin (`.`);
+parallel_size (`6`);
 # pkg_config(`--cflags --libs gtk+-3.0`);
 pkg_in [`gtk+-3.0`];
 # clean_main();
@@ -11,3 +14,7 @@ pkg_in [`gtk+-3.0`];
 
 # clean_main();
 make();
+compare [`example/src/main copy.cc`];
+main (`'example/src/main copy.cc'`);
+out  (`main-cpy`);
+make ();

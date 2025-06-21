@@ -63,4 +63,17 @@ namespace magma {
         }
         return content;
     }
+
+
+    
+    
+    bool is_num(const std::string& str) {
+        for (char ch : str) {
+            if (ch < 48 || ch > 57) { // ASCII check: not between '0' (48) and '9' (57)
+                return false;
+            }
+        }
+        return true;
+    }
+    
 };
