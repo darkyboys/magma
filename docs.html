@@ -225,7 +225,7 @@ span {
 <br>
 <br>
     <button>
-        You are using MAGMA 6
+        You are using MAGMA 7
     </button>
 
     <br>
@@ -827,6 +827,64 @@ span {
                     <strong>make</strong> ();
 
                 </div>
+            </div>
+        </details>
+
+        <br>
+        <br>
+
+        <details>
+            <summary>
+                Introduction To The shell64.magma
+            </summary>
+            <div class="container">
+                <strong>shell64.magma</strong> is a file which tells magma to execute shell script but with some special powers that magma allows you to have.
+                <br>
+                <br>
+                <p>
+                    These Powers Includes:
+                </p>
+                <ul>
+                    <li>If you cancel one line the entire script won't be closed , The next line will execute in your <code>system shell</code>.</li><br>
+                    <li>You can use some magma specific commands which the normal shell don't supports.</li><br>
+                    <li>You can execute these same as magma executes the <strong>build.magma</strong> files.</li>
+                </ul>
+                <br>
+                <br>
+                <h3>
+                    Example:
+                </h3>
+                <div class="code">
+                    <strong>mkdir hello </strong> # Just a command to make a directory <br>
+                    <strong>ls </strong>  # Just a command to print the directories / files in a directory all from your shell directly.<br>
+                    <strong>magma.call.[magma command here]</strong> # Just the format to execute a magma command.
+                </div>
+                <p>
+                    When you call <code>magma.call.</code> you now can use a valid magma command here , Just it must be valid othervise magma will treat it as a shell command, And in a magma command don't include any spaces othervise magma will think of it as a shell command.
+                </p>
+            </div>
+        </details>
+
+        <br>
+        <br>
+
+        <details>
+            <summary class="card">
+                magma.call.show_logs=true
+            </summary>
+            <div class="container" style="text-align: left;">
+                <b>magma.call.show_logs=true</b> this line in a magma shell64 script tells magma to show the logs and if the argument is false then it won't show them.
+                <br>
+                <p>
+                    <h3>
+                        Example :- 
+                    </h3>
+                    <div class="code">
+                        <strong>magma.call.show_logs=true </strong> # Show the logs! <br>
+                        <strong>magma.call.show_logs=false </strong>  # Don't show the logs<br>
+                    </div>
+                </p>
+                You can call this anytime , Anywhere just be sure to write it as it is.
             </div>
         </details>
 

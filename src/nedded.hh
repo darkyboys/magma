@@ -14,11 +14,12 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <thread>
 #include <random>
 #include <filesystem>
 
 #define UNIDEF "unidefx000001";
-#define MAGMA_VERSION 6;
+#define MAGMA_VERSION 7;
 
 // typedefinations
 typedef std::string               func  ; // defination of the func keyword
@@ -32,6 +33,8 @@ bool show_logs = false;
 bool increment = false,
      increment_possible = false,
      increment_checked = false;
+bool parallel = false;
+int  parallel_size = 6;
 const std::string magma_incremental_directory = "MagmaConfig/increment/";
 const std::string UNIDEF_STR = "unidefx000001";
 
@@ -43,5 +46,6 @@ const std::string UNIDEF_STR = "unidefx000001";
 #include "magma/magma_lexer.hh"
 #include "magma/magma_ir.hh"
 #include "magma/magma_function.hh"
+#include "magma/magma_executer.hh"
 #include "magma/magma_parser.hh"
 #include "main.hh"

@@ -12,4 +12,5 @@
 
 namespace magma {
     func IR = ""; // the variable which stores the IR in it for the compilation
+    std::vector <std::vector <std::string>> IR_Files = {};
 }

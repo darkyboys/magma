@@ -10,7 +10,7 @@
 
 
 #ifndef MAGMA
-#define MAGMA 6
+#define MAGMA 7
 
 // Including the depnedencies
 #include "nedded.hh"
@@ -26,6 +26,14 @@ int main(int argc, char* argv[]){
         if (ifile_shell64.is_open()){
             std::string temp;
             while (std::getline(ifile_shell64, temp)) {
+                if (temp == "magma.call.show_logs=true"){
+                    show_logs = true;
+                    continue;
+                }
+                if (temp == "magma.call.show_logs=false"){
+                    show_logs = false;
+                    continue;
+                }
                 magma::log ("cli", "Executing `" + temp + "` command for the system shell.");
                 std::system (temp.c_str());
             }
